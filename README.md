@@ -103,31 +103,6 @@ Each restaurant in `restaurants.json` includes:
 }
 ```
 
-## Current Restaurant List
-
-1. **Charles & Reid Detroit Pizza** - Pizza (Effort: 2)
-2. **Chick-fil-A** - Fast Food (Effort: 1)
-3. **MiddleCoast** - Brewery (Effort: 3)
-4. **Chubby Unicorn** - American/Breakfast (Effort: 3)
-5. **Taqueria Las Lagunas** - Mexican (Effort: 2)
-6. **Raduno** - Italian Deli (Effort: 2)
-7. **Bubbie's Bagels** - Bagels/Breakfast (Effort: 1)
-8. **Jersey Mike's Subs** - Sandwiches (Effort: 1)
-9. **Crocodile Palace** - Sichuan (Effort: 3)
-10. **The Little Fleet** - Food Trucks (Effort: 2)
-11. **Jolly Pumpkin** - Upscale Brewpub (Effort: 4)
-
-## Setup Instructions
-
-1. Fork or download this repository
-2. Ensure both `index.html` and `restaurants.json` are in the root directory
-3. For GitHub Pages:
-   - Go to Settings → Pages
-   - Select "Deploy from a branch"
-   - Choose main branch and root folder
-   - Save and wait for deployment
-4. Access at `https://[username].github.io/WDYW/`
-
 ## Customizing Restaurants
 
 To add or modify restaurants, edit `restaurants.json`:
