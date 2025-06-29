@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Picker</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .pick-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.5rem;
+            padding: 1.5rem 3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+            min-width: 250px;
+        }
+
+        .pick-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .pick-button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 3rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .restaurant-name {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .restaurant-details {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            font-weight: 500;
+        }
+
+        .status.open {
+            background: rgba(40, 167, 69, 0.8);
+        }
+
+        .status.closed {
+            background: rgba(220, 53, 69, 0.8);
+        }
+
+        .re-roll {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .re-roll:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .pick-button {
+                font-size: 1.3rem;
+                padding: 1.2rem 2rem;
+                min-width: 200px;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍽️</h1>
+        <p class="subtitle">Where should we eat?</p>
+        
+        <button class="pick-button" id="pickButton">Pick For Me!</button>
+        
+        <div class="result" id="result">
+            <div class="restaurant-name" id="restaurantName"></div>
+            <div class="restaurant-details" id="restaurantDetails"></div>
+            <button class="re-roll" id="rerollButton">🎲 Pick Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Restaurant data - Edit this JSON to add/remove restaurants
+        const restaurants = [
+            {
+                name: "Tony's Italian Bistro",
+                cuisine: "Italian",
+                price: "$$",
+                phone: "(555) 123-4567",
+                address: "123 Main St",
+                hours: {
+                    monday: { open: "11:00", close: "22:00" },
+                    tuesday: { open: "11:00", close: "22:00" },
+                    wednesday: { open: "11:00", close: "22:00" },
+                    thursday: { open: "11:00", close: "22:00" },
+                    friday: { open: "11:00", close: "23:00" },
+                    saturday: { open: "11:00", close: "23:00" },
+                    sunday: { open: "12:00", close: "21:00" }
+                }
+            },
+            {
+                name: "Taco Libre",
+                cuisine: "Mexican",
+                price: "$",
+                phone: "(555) 987-6543",
+                address: "456 Oak Ave",
+                hours: {
+                    monday: { open: "10:00", close: "21:00" },
+                    tuesday: { open: "10:00", close: "21:00" },
+                    wednesday: { open: "10:00", close: "21:00" },
+                    thursday: { open: "10:00", close: "21:00" },
+                    friday: { open: "10:00", close: "22:00" },
+                    saturday: { open: "10:00", close: "22:00" },
+                    sunday: { open: "11:00", close: "20:00" }
+                }
+            },
+            {
+                name: "Sakura Sushi",
+                cuisine: "Japanese",
+                price: "$$$",
+                phone: "(555) 555-0123",
+                address: "789 Pine St",
+                hours: {
+                    monday: null, // Closed on Monday
+                    tuesday: { open: "17:00", close: "22:00" },
+                    wednesday: { open: "17:00", close: "22:00" },
+                    thursday: { open: "17:00", close: "22:00" },
+                    friday: { open: "17:00", close: "23:00" },
+                    saturday: { open: "17:00", close: "23:00" },
+                    sunday: { open: "17:00", close: "21:00" }
+                }
+            },
+            {
+                name: "Burger Junction",
+                cuisine: "American",
+                price: "$",
+                phone: "(555) 444-7890",
+                address: "321 Elm St",
+                hours: {
+                    monday: { open: "11:00", close: "23:00" },
+                    tuesday: { open: "11:00", close: "23:00" },
+                    wednesday: { open: "11:00", close: "23:00" },
+                    thursday: { open: "11:00", close: "23:00" },
+                    friday: { open: "11:00", close: "24:00" },
+                    saturday: { open: "11:00", close: "24:00" },
+                    sunday: { open: "12:00", close: "22:00" }
+                }
+            },
+            {
+                name: "Green Garden Cafe",
+                cuisine: "Healthy",
+                price: "$$",
+                phone: "(555) 333-2222",
+                address: "567 Maple Dr",
+                hours: {
+                    monday: { open: "08:00", close: "15:00" },
+                    tuesday: { open: "08:00", close: "15:00" },
+                    wednesday: { open: "08:00", close: "15:00" },
+                    thursday: { open: "08:00", close: "15:00" },
+                    friday: { open: "08:00", close: "15:00" },
+                    saturday: { open: "09:00", close: "14:00" },
+                    sunday: null // Closed on Sunday
+                }
+            },
+            {
+                name: "Pizza Palace",
+                cuisine: "Pizza",
+                price: "$",
+                phone: "(555) 777-8888",
+                address: "890 Cedar Ave",
+                hours: {
+                    monday: { open: "16:00", close: "22:00" },
+                    tuesday: { open: "16:00", close: "22:00" },
+                    wednesday: { open: "16:00", close: "22:00" },
+                    thursday: { open: "16:00", close: "22:00" },
+                    friday: { open: "16:00", close: "23:00" },
+                    saturday: { open: "12:00", close: "23:00" },
+                    sunday: { open: "12:00", close: "22:00" }
+                }
+            }
+        ];
+
+        function isRestaurantOpen(restaurant) {
+            const now = new Date();
+            const currentDay = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][now.getDay()];
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+
+            const dayHours = restaurant.hours[currentDay];
+            if (!dayHours) return false; // Closed on this day
+
+            const openTime = timeToMinutes(dayHours.open);
+            const closeTime = timeToMinutes(dayHours.close);
+
+            return currentTime >= openTime && currentTime <= closeTime;
+        }
+
+        function timeToMinutes(timeString) {
+            if (!timeString) return 0;
+            const [hours, minutes] = timeString.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+
+        function formatTime(time) {
+            if (!time) return '';
+            const [hours, minutes] = time.split(':');
+            const hour12 = ((parseInt(hours) + 11) % 12) + 1;
+            const ampm = parseInt(hours) >= 12 ? 'PM' : 'AM';
+            return `${hour12}:${minutes} ${ampm}`;
+        }
+
+        function getTodayHours(restaurant) {
+            const today = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][new Date().getDay()];
+            const hours = restaurant.hours[today];
+            
+            if (!hours) return 'Closed today';
+            return `${formatTime(hours.open)} - ${formatTime(hours.close)}`;
+        }
+
+        function pickRestaurant() {
+            // Get only open restaurants
+            const openRestaurants = restaurants.filter(isRestaurantOpen);
+            
+            // If no restaurants are open, pick from all restaurants
+            const availableRestaurants = openRestaurants.length > 0 ? openRestaurants : restaurants;
+            
+            // Random selection
+            const selected = availableRestaurants[Math.floor(Math.random() * availableRestaurants.length)];
+            const isOpen = isRestaurantOpen(selected);
+            
+            // Display result
+            document.getElementById('restaurantName').textContent = selected.name;
+            
+            const details = `
+                ${selected.cuisine} • ${selected.price}<br>
+                <span class="status ${isOpen ? 'open' : 'closed'}">${isOpen ? 'Open Now' : 'Closed'}</span><br>
+                Today: ${getTodayHours(selected)}<br>
+                📞 ${selected.phone}<br>
+                📍 ${selected.address}
+            `;
+            
+            document.getElementById('restaurantDetails').innerHTML = details;
+            document.getElementById('result').classList.add('show');
+        }
+
+        // Event listeners
+        document.getElementById('pickButton').addEventListener('click', pickRestaurant);
+        document.getElementById('rerollButton').addEventListener('click', pickRestaurant);
+
+        // Hide result initially
+        document.getElementById('result').classList.remove('show');
+    </script>
+</body>
+</html>
