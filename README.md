@@ -127,7 +127,8 @@ To add or modify restaurants, edit `restaurants.json`:
 - Integration with Google Maps APIs for real-time hours
 - Restaurant Lookup with Google Maps APIs for quick adding
 - Add simple accounts and database to go wider than just us
-- If "Roll Again" is selected, remove the current selection from the next randomized roll IE we've decided we don't want that, don't offer it again this session.
+- If "Roll Again" is selected, remove the current selection from the next randomized roll IE we've decided we don't want that, don't offer it again this session
+- Adjust meal time weighting so a "0" for certain meal time means there's no chance it's selected
 
 ## Contributing
 
