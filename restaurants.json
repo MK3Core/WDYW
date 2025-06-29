@@ -17,7 +17,7 @@
         "sunday": null
       },
       "service": ["sitdown", "takeout"],
-      "effortLevel": 2,
+      "effortLevel": 3,
       "mealPreference": {
         "breakfast": 0,
         "lunch": 3,
@@ -43,9 +43,9 @@
       "service": ["takeout"],
       "effortLevel": 1,
       "mealPreference": {
-        "breakfast": 4,
+        "breakfast": 1,
         "lunch": 5,
-        "dinner": 3
+        "dinner": 4
       }
     },
     {
@@ -64,10 +64,10 @@
         "saturday": { "open": "08:00", "close": "23:00" },
         "sunday": { "open": "08:00", "close": "20:00" }
       },
-      "service": ["sitdown"],
+      "service": ["sitdown", "takeout"],
       "effortLevel": 3,
       "mealPreference": {
-        "breakfast": 3,
+        "breakfast": 0,
         "lunch": 4,
         "dinner": 5
       }
@@ -88,10 +88,10 @@
         "saturday": { "open": "09:00", "close": "15:00" },
         "sunday": null
       },
-      "service": ["sitdown"],
-      "effortLevel": 3,
+      "service": ["sitdown", "takeout"],
+      "effortLevel": 1,
       "mealPreference": {
-        "breakfast": 5,
+        "breakfast": 4,
         "lunch": 5,
         "dinner": 0
       }
@@ -113,10 +113,10 @@
         "sunday": { "open": "11:00", "close": "20:00" }
       },
       "service": ["sitdown", "takeout"],
-      "effortLevel": 2,
+      "effortLevel": 3,
       "mealPreference": {
         "breakfast": 0,
-        "lunch": 5,
+        "lunch": 3,
         "dinner": 5
       }
     },
@@ -137,7 +137,7 @@
         "sunday": null
       },
       "service": ["sitdown", "takeout"],
-      "effortLevel": 2,
+      "effortLevel": 3,
       "mealPreference": {
         "breakfast": 0,
         "lunch": 5,
@@ -189,7 +189,7 @@
       "mealPreference": {
         "breakfast": 0,
         "lunch": 5,
-        "dinner": 4
+        "dinner": 2
       }
     },
     {
@@ -208,8 +208,8 @@
         "saturday": { "open": "15:00", "close": "21:00" },
         "sunday": { "open": "15:00", "close": "20:00" }
       },
-      "service": ["sitdown", "takeout"],
-      "effortLevel": 3,
+      "service": ["takeout"],
+      "effortLevel": 2,
       "mealPreference": {
         "breakfast": 0,
         "lunch": 0,
@@ -232,8 +232,8 @@
         "saturday": { "open": "11:30", "close": "24:00" },
         "sunday": { "open": "11:30", "close": "21:00" }
       },
-      "service": ["takeout"],
-      "effortLevel": 2,
+      "service": ["sitdown", "takeout"],
+      "effortLevel": 3,
       "mealPreference": {
         "breakfast": 0,
         "lunch": 4,
