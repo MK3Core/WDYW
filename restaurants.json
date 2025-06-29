@@ -67,6 +67,125 @@
         "saturday": { "open": "09:00", "close": "15:00" },
         "sunday": null
       }
+    },
+    {
+      "id": 5,
+      "name": "Taqueria Las Lagunas",
+      "cuisine": "Mexican",
+      "price": "$$",
+      "phone": "(231) 943-1101",
+      "address": "1752 S Garfield Ave, Traverse City, MI 49684",
+      "hours": {
+        "monday": { "open": "11:00", "close": "20:00" },
+        "tuesday": { "open": "11:00", "close": "20:00" },
+        "wednesday": { "open": "11:00", "close": "20:00" },
+        "thursday": { "open": "11:00", "close": "20:00" },
+        "friday": { "open": "11:00", "close": "20:00" },
+        "saturday": { "open": "11:00", "close": "20:00" },
+        "sunday": { "open": "11:00", "close": "20:00" }
+      }
+    },
+    {
+      "id": 6,
+      "name": "Raduno",
+      "cuisine": "Italian Deli",
+      "price": "$$",
+      "phone": "(231) 421-1218",
+      "address": "545 E Eighth St, Traverse City, MI 49686",
+      "hours": {
+        "monday": null,
+        "tuesday": { "open": "11:00", "close": "18:00" },
+        "wednesday": { "open": "11:00", "close": "18:00" },
+        "thursday": { "open": "11:00", "close": "18:00" },
+        "friday": { "open": "11:00", "close": "18:00" },
+        "saturday": { "open": "11:00", "close": "18:00" },
+        "sunday": null
+      }
+    },
+    {
+      "id": 7,
+      "name": "Bubbie's Bagels",
+      "cuisine": "Bagels",
+      "price": "$$",
+      "phone": "(231) 252-3587",
+      "address": "1215 E Front St, Floor 1 - Campus Plaza, Traverse City, MI 49686",
+      "hours": {
+        "monday": { "open": "07:00", "close": "13:00" },
+        "tuesday": null,
+        "wednesday": { "open": "07:00", "close": "13:00" },
+        "thursday": { "open": "07:00", "close": "13:00" },
+        "friday": { "open": "07:00", "close": "13:00" },
+        "saturday": { "open": "08:00", "close": "13:00" },
+        "sunday": { "open": "08:00", "close": "13:00" }
+      }
+    },
+    {
+      "id": 8,
+      "name": "Jersey Mike's Subs",
+      "cuisine": "Sandwiches",
+      "price": "$$",
+      "phone": "(XXX) XXX-XXXX",
+      "address": "110 Munson Ave, Traverse City, MI 49686",
+      "hours": {
+        "monday": { "open": "10:00", "close": "21:00" },
+        "tuesday": { "open": "10:00", "close": "21:00" },
+        "wednesday": { "open": "10:00", "close": "21:00" },
+        "thursday": { "open": "10:00", "close": "21:00" },
+        "friday": { "open": "10:00", "close": "21:00" },
+        "saturday": { "open": "10:00", "close": "21:00" },
+        "sunday": { "open": "10:00", "close": "21:00" }
+      }
+    },
+    {
+      "id": 9,
+      "name": "Crocodile Palace",
+      "cuisine": "Sichuan",
+      "price": "$$",
+      "phone": "(231) 421-3555",
+      "address": "124 Cochlin St, Traverse City, MI 49686",
+      "hours": {
+        "monday": null,
+        "tuesday": null,
+        "wednesday": { "open": "15:00", "close": "21:00" },
+        "thursday": { "open": "15:00", "close": "21:00" },
+        "friday": { "open": "15:00", "close": "21:00" },
+        "saturday": { "open": "15:00", "close": "21:00" },
+        "sunday": { "open": "15:00", "close": "20:00" }
+      }
+    },
+    {
+      "id": 10,
+      "name": "The Little Fleet",
+      "cuisine": "Food Trucks",
+      "price": "$$",
+      "phone": "(XXX) XXX-XXXX",
+      "address": "Traverse City, MI",
+      "hours": {
+        "monday": { "open": "11:30", "close": "23:00" },
+        "tuesday": { "open": "11:30", "close": "23:00" },
+        "wednesday": { "open": "11:30", "close": "23:00" },
+        "thursday": { "open": "11:30", "close": "23:00" },
+        "friday": { "open": "11:30", "close": "24:00" },
+        "saturday": { "open": "11:30", "close": "24:00" },
+        "sunday": { "open": "11:30", "close": "21:00" }
+      }
+    },
+    {
+      "id": 11,
+      "name": "Jolly Pumpkin Restaurant & Brewery",
+      "cuisine": "Brewpub",
+      "price": "$$$",
+      "phone": "(231) 223-4333",
+      "address": "13512 Peninsula Dr, Traverse City, MI 49686",
+      "hours": {
+        "monday": { "open": "11:00", "close": "20:00" },
+        "tuesday": { "open": "11:00", "close": "20:00" },
+        "wednesday": { "open": "11:00", "close": "20:00" },
+        "thursday": { "open": "11:00", "close": "20:00" },
+        "friday": { "open": "11:00", "close": "21:00" },
+        "saturday": { "open": "11:00", "close": "21:00" },
+        "sunday": { "open": "11:00", "close": "20:00" }
+      }
     }
   ]
 }
