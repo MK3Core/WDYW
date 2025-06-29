@@ -61,6 +61,11 @@
             transform: translateY(0);
         }
 
+        .pick-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .result {
             margin-top: 3rem;
             background: rgba(255, 255, 255, 0.15);
@@ -127,6 +132,24 @@
             background: rgba(255, 255, 255, 0.2);
         }
 
+        .error {
+            background: rgba(220, 53, 69, 0.8);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .loading {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-top: 1rem;
+        }
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 2.5rem;
@@ -151,6 +174,10 @@
         
         <button class="pick-button" id="pickButton">Pick For Me!</button>
         
+        <div class="loading" id="loading" style="display: none;">Loading restaurants...</div>
+        
+        <div class="error" id="error"></div>
+        
         <div class="result" id="result">
             <div class="restaurant-name" id="restaurantName"></div>
             <div class="restaurant-details" id="restaurantDetails"></div>
@@ -159,105 +186,73 @@
     </div>
 
     <script>
-        // Restaurant data - Edit this JSON to add/remove restaurants
-        const restaurants = [
-            {
-                name: "Tony's Italian Bistro",
-                cuisine: "Italian",
-                price: "$$",
-                phone: "(555) 123-4567",
-                address: "123 Main St",
-                hours: {
-                    monday: { open: "11:00", close: "22:00" },
-                    tuesday: { open: "11:00", close: "22:00" },
-                    wednesday: { open: "11:00", close: "22:00" },
-                    thursday: { open: "11:00", close: "22:00" },
-                    friday: { open: "11:00", close: "23:00" },
-                    saturday: { open: "11:00", close: "23:00" },
-                    sunday: { open: "12:00", close: "21:00" }
+        // Global variable to store restaurant data
+        let restaurants = [];
+        let dataLoaded = false;
+
+        // Load restaurant data from external JSON file
+        async function loadRestaurants() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const pickButton = document.getElementById('pickButton');
+            
+            try {
+                loadingEl.style.display = 'block';
+                pickButton.disabled = true;
+                
+                // Use relative path that works on GitHub Pages
+                const response = await fetch('./restaurants.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-            },
-            {
-                name: "Taco Libre",
-                cuisine: "Mexican",
-                price: "$",
-                phone: "(555) 987-6543",
-                address: "456 Oak Ave",
-                hours: {
-                    monday: { open: "10:00", close: "21:00" },
-                    tuesday: { open: "10:00", close: "21:00" },
-                    wednesday: { open: "10:00", close: "21:00" },
-                    thursday: { open: "10:00", close: "21:00" },
-                    friday: { open: "10:00", close: "22:00" },
-                    saturday: { open: "10:00", close: "22:00" },
-                    sunday: { open: "11:00", close: "20:00" }
-                }
-            },
-            {
-                name: "Sakura Sushi",
-                cuisine: "Japanese",
-                price: "$$$",
-                phone: "(555) 555-0123",
-                address: "789 Pine St",
-                hours: {
-                    monday: null, // Closed on Monday
-                    tuesday: { open: "17:00", close: "22:00" },
-                    wednesday: { open: "17:00", close: "22:00" },
-                    thursday: { open: "17:00", close: "22:00" },
-                    friday: { open: "17:00", close: "23:00" },
-                    saturday: { open: "17:00", close: "23:00" },
-                    sunday: { open: "17:00", close: "21:00" }
-                }
-            },
-            {
-                name: "Burger Junction",
-                cuisine: "American",
-                price: "$",
-                phone: "(555) 444-7890",
-                address: "321 Elm St",
-                hours: {
-                    monday: { open: "11:00", close: "23:00" },
-                    tuesday: { open: "11:00", close: "23:00" },
-                    wednesday: { open: "11:00", close: "23:00" },
-                    thursday: { open: "11:00", close: "23:00" },
-                    friday: { open: "11:00", close: "24:00" },
-                    saturday: { open: "11:00", close: "24:00" },
-                    sunday: { open: "12:00", close: "22:00" }
-                }
-            },
-            {
-                name: "Green Garden Cafe",
-                cuisine: "Healthy",
-                price: "$$",
-                phone: "(555) 333-2222",
-                address: "567 Maple Dr",
-                hours: {
-                    monday: { open: "08:00", close: "15:00" },
-                    tuesday: { open: "08:00", close: "15:00" },
-                    wednesday: { open: "08:00", close: "15:00" },
-                    thursday: { open: "08:00", close: "15:00" },
-                    friday: { open: "08:00", close: "15:00" },
-                    saturday: { open: "09:00", close: "14:00" },
-                    sunday: null // Closed on Sunday
-                }
-            },
-            {
-                name: "Pizza Palace",
-                cuisine: "Pizza",
-                price: "$",
-                phone: "(555) 777-8888",
-                address: "890 Cedar Ave",
-                hours: {
-                    monday: { open: "16:00", close: "22:00" },
-                    tuesday: { open: "16:00", close: "22:00" },
-                    wednesday: { open: "16:00", close: "22:00" },
-                    thursday: { open: "16:00", close: "22:00" },
-                    friday: { open: "16:00", close: "23:00" },
-                    saturday: { open: "12:00", close: "23:00" },
-                    sunday: { open: "12:00", close: "22:00" }
+                
+                const data = await response.json();
+                restaurants = data.restaurants;
+                dataLoaded = true;
+                
+                loadingEl.style.display = 'none';
+                pickButton.disabled = false;
+                
+                // Show success message briefly
+                console.log(`Loaded ${restaurants.length} restaurants successfully`);
+                
+            } catch (error) {
+                loadingEl.style.display = 'none';
+                errorEl.textContent = `Error loading restaurants: ${error.message}. Make sure restaurants.json is in the same directory as index.html`;
+                errorEl.classList.add('show');
+                pickButton.disabled = true;
+                console.error('Error loading restaurants:', error);
+                
+                // Fallback: Try to load with different path if on GitHub Pages subdirectory
+                if (window.location.hostname.includes('github.io')) {
+                    tryAlternativePath();
                 }
             }
-        ];
+        }
+
+        // Fallback function for GitHub Pages subdirectory hosting
+        async function tryAlternativePath() {
+            try {
+                const pathSegments = window.location.pathname.split('/').filter(Boolean);
+                const repoName = pathSegments[0] || '';
+                const alternativePath = repoName ? `/${repoName}/restaurants.json` : '/restaurants.json';
+                
+                const response = await fetch(alternativePath);
+                if (response.ok) {
+                    const data = await response.json();
+                    restaurants = data.restaurants;
+                    dataLoaded = true;
+                    
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('pickButton').disabled = false;
+                    document.getElementById('error').classList.remove('show');
+                    
+                    console.log(`Loaded ${restaurants.length} restaurants successfully from alternative path`);
+                }
+            } catch (error) {
+                console.error('Alternative path also failed:', error);
+            }
+        }
 
         function isRestaurantOpen(restaurant) {
             const now = new Date();
@@ -296,6 +291,11 @@
         }
 
         function pickRestaurant() {
+            if (!dataLoaded || restaurants.length === 0) {
+                alert('Restaurant data not loaded yet. Please wait...');
+                return;
+            }
+
             // Get only open restaurants
             const openRestaurants = restaurants.filter(isRestaurantOpen);
             
@@ -324,6 +324,11 @@
         // Event listeners
         document.getElementById('pickButton').addEventListener('click', pickRestaurant);
         document.getElementById('rerollButton').addEventListener('click', pickRestaurant);
+
+        // Load restaurants when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            loadRestaurants();
+        });
 
         // Hide result initially
         document.getElementById('result').classList.remove('show');
