@@ -148,6 +148,14 @@
             cursor: pointer;
         }
 
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         .pick-button {
             background: rgba(255, 255, 255, 0.2);
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -176,6 +184,59 @@
         .pick-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        .view-list-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 0.9rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .view-list-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .restaurant-list {
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+            text-align: left;
+        }
+
+        .restaurant-list.show {
+            display: block;
+        }
+
+        .restaurant-list h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .restaurant-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            columns: 2;
+            column-gap: 2rem;
+        }
+
+        .restaurant-list li {
+            margin-bottom: 0.5rem;
+            break-inside: avoid;
+            padding: 0.25rem 0;
         }
 
         .result {
@@ -290,6 +351,14 @@
             .service-options {
                 flex-direction: column;
             }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .restaurant-list ul {
+                columns: 1;
+            }
         }
     </style>
 </head>
@@ -320,9 +389,9 @@
             <div class="preference-group">
                 <label class="preference-label">
                     Maximum Effort Level
-                    <span class="effort-value" id="effortValue">5</span>
+                    <span class="effort-value" id="effortValue">3</span>
                 </label>
-                <input type="range" id="effortSlider" class="effort-slider" min="1" max="5" value="5">
+                <input type="range" id="effortSlider" class="effort-slider" min="1" max="5" value="3">
                 <div class="effort-labels">
                     <span>Quick & Easy</span>
                     <span>Special Occasion</span>
@@ -330,11 +399,19 @@
             </div>
         </div>
         
-        <button class="pick-button" id="pickButton">Pick For Me!</button>
+        <div class="button-group">
+            <button class="pick-button" id="pickButton">Pick For Me!</button>
+            <button class="view-list-button" id="viewListButton">📋 View All Options</button>
+        </div>
         
         <div class="loading" id="loading" style="display: none;">Loading restaurants...</div>
         
         <div class="error" id="error"></div>
+        
+        <div class="restaurant-list" id="restaurantList">
+            <h3>All Restaurant Options</h3>
+            <ul id="restaurantNames"></ul>
+        </div>
         
         <div class="result" id="result">
             <div class="restaurant-name" id="restaurantName"></div>
@@ -360,10 +437,12 @@
             const loadingEl = document.getElementById('loading');
             const errorEl = document.getElementById('error');
             const pickButton = document.getElementById('pickButton');
+            const viewListButton = document.getElementById('viewListButton');
             
             try {
                 loadingEl.style.display = 'block';
                 pickButton.disabled = true;
+                viewListButton.disabled = true;
                 
                 // Use relative path that works on GitHub Pages
                 const response = await fetch('./restaurants.json');
@@ -377,6 +456,10 @@
                 
                 loadingEl.style.display = 'none';
                 pickButton.disabled = false;
+                viewListButton.disabled = false;
+                
+                // Populate the restaurant list
+                populateRestaurantList();
                 
                 // Show success message briefly
                 console.log(`Loaded ${restaurants.length} restaurants successfully`);
@@ -386,6 +469,7 @@
                 errorEl.textContent = `Error loading restaurants: ${error.message}. Make sure restaurants.json is in the same directory as index.html`;
                 errorEl.classList.add('show');
                 pickButton.disabled = true;
+                viewListButton.disabled = true;
                 console.error('Error loading restaurants:', error);
                 
                 // Fallback: Try to load with different path if on GitHub Pages subdirectory
@@ -410,12 +494,42 @@
                     
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('pickButton').disabled = false;
+                    document.getElementById('viewListButton').disabled = false;
                     document.getElementById('error').classList.remove('show');
+                    
+                    // Populate the restaurant list
+                    populateRestaurantList();
                     
                     console.log(`Loaded ${restaurants.length} restaurants successfully from alternative path`);
                 }
             } catch (error) {
                 console.error('Alternative path also failed:', error);
+            }
+        }
+
+        function populateRestaurantList() {
+            const restaurantNamesEl = document.getElementById('restaurantNames');
+            restaurantNamesEl.innerHTML = '';
+            
+            restaurants
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .forEach(restaurant => {
+                    const li = document.createElement('li');
+                    li.textContent = restaurant.name;
+                    restaurantNamesEl.appendChild(li);
+                });
+        }
+
+        function toggleRestaurantList() {
+            const listEl = document.getElementById('restaurantList');
+            const isVisible = listEl.classList.contains('show');
+            
+            if (isVisible) {
+                listEl.classList.remove('show');
+            } else {
+                listEl.classList.add('show');
+                // Hide the result when showing the list
+                document.getElementById('result').classList.remove('show');
             }
         }
 
@@ -493,6 +607,9 @@
                 return;
             }
 
+            // Hide the restaurant list when picking
+            document.getElementById('restaurantList').classList.remove('show');
+
             // Get preferences
             const servicePreference = document.querySelector('input[name="service"]:checked').value;
             const maxEffort = parseInt(document.getElementById('effortSlider').value);
@@ -557,6 +674,7 @@
         // Event listeners
         document.getElementById('pickButton').addEventListener('click', pickRestaurant);
         document.getElementById('rerollButton').addEventListener('click', pickRestaurant);
+        document.getElementById('viewListButton').addEventListener('click', toggleRestaurantList);
 
         // Load restaurants when page loads
         window.addEventListener('DOMContentLoaded', () => {
