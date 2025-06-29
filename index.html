@@ -8,7 +8,7 @@
         body {
             margin: 0;
             padding: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -20,8 +20,10 @@
 
         .container {
             text-align: center;
-            max-width: 500px;
+            max-width: 600px;
             padding: 2rem;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         h1 {
@@ -32,8 +34,118 @@
 
         .subtitle {
             font-size: 1.2rem;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             opacity: 0.9;
+        }
+
+        .preferences {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .preference-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .preference-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .preference-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .service-options {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .service-option {
+            flex: 1;
+        }
+
+        .service-option input[type="radio"] {
+            display: none;
+        }
+
+        .service-option label {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .service-option input[type="radio"]:checked + label {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .effort-slider {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .effort-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .effort-value {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            margin-left: 0.5rem;
+            font-weight: 500;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
         }
 
         .pick-button {
@@ -116,6 +228,16 @@
             background: rgba(220, 53, 69, 0.8);
         }
 
+        .match-score {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            font-weight: 500;
+            background: rgba(255, 193, 7, 0.8);
+        }
+
         .re-roll {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -164,6 +286,10 @@
             .container {
                 padding: 1rem;
             }
+
+            .service-options {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -171,6 +297,38 @@
     <div class="container">
         <h1>🍽️</h1>
         <p class="subtitle">Where should we eat?</p>
+        
+        <div class="preferences">
+            <div class="preference-group">
+                <label class="preference-label">Dining Preference</label>
+                <div class="service-options">
+                    <div class="service-option">
+                        <input type="radio" id="both" name="service" value="both" checked>
+                        <label for="both">No Preference</label>
+                    </div>
+                    <div class="service-option">
+                        <input type="radio" id="sitdown" name="service" value="sitdown">
+                        <label for="sitdown">Sit-down</label>
+                    </div>
+                    <div class="service-option">
+                        <input type="radio" id="takeout" name="service" value="takeout">
+                        <label for="takeout">Takeout</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preference-group">
+                <label class="preference-label">
+                    Maximum Effort Level
+                    <span class="effort-value" id="effortValue">5</span>
+                </label>
+                <input type="range" id="effortSlider" class="effort-slider" min="1" max="5" value="5">
+                <div class="effort-labels">
+                    <span>Quick & Easy</span>
+                    <span>Special Occasion</span>
+                </div>
+            </div>
+        </div>
         
         <button class="pick-button" id="pickButton">Pick For Me!</button>
         
@@ -189,6 +347,13 @@
         // Global variable to store restaurant data
         let restaurants = [];
         let dataLoaded = false;
+
+        // Update effort value display
+        const effortSlider = document.getElementById('effortSlider');
+        const effortValue = document.getElementById('effortValue');
+        effortSlider.addEventListener('input', (e) => {
+            effortValue.textContent = e.target.value;
+        });
 
         // Load restaurant data from external JSON file
         async function loadRestaurants() {
@@ -290,11 +455,52 @@
             return `${formatTime(hours.open)} - ${formatTime(hours.close)}`;
         }
 
+        function getCurrentMealTime() {
+            const hour = new Date().getHours();
+            if (hour >= 5 && hour < 11) return 'breakfast';
+            if (hour >= 11 && hour < 16) return 'lunch';
+            return 'dinner';
+        }
+
+        function calculateWeight(restaurant, preferences) {
+            let weight = 1;
+            
+            // Service type preference
+            if (preferences.service !== 'both') {
+                if (restaurant.service.includes(preferences.service)) {
+                    weight *= 2; // Double weight for matching service preference
+                } else {
+                    weight *= 0.1; // Significantly reduce weight for non-matching
+                }
+            }
+            
+            // Effort level preference
+            if (restaurant.effortLevel > preferences.maxEffort) {
+                weight *= 0.2; // Reduce weight for restaurants above effort threshold
+            }
+            
+            // Meal time preference
+            const mealTime = getCurrentMealTime();
+            const mealScore = restaurant.mealPreference[mealTime];
+            weight *= (mealScore + 1); // Add 1 to avoid zero weight
+            
+            return weight;
+        }
+
         function pickRestaurant() {
             if (!dataLoaded || restaurants.length === 0) {
                 alert('Restaurant data not loaded yet. Please wait...');
                 return;
             }
+
+            // Get preferences
+            const servicePreference = document.querySelector('input[name="service"]:checked').value;
+            const maxEffort = parseInt(document.getElementById('effortSlider').value);
+            
+            const preferences = {
+                service: servicePreference,
+                maxEffort: maxEffort
+            };
 
             // Get only open restaurants
             const openRestaurants = restaurants.filter(isRestaurantOpen);
@@ -302,16 +508,43 @@
             // If no restaurants are open, pick from all restaurants
             const availableRestaurants = openRestaurants.length > 0 ? openRestaurants : restaurants;
             
-            // Random selection
-            const selected = availableRestaurants[Math.floor(Math.random() * availableRestaurants.length)];
+            // Calculate weights for each restaurant
+            const weightedRestaurants = availableRestaurants.map(restaurant => ({
+                restaurant: restaurant,
+                weight: calculateWeight(restaurant, preferences)
+            }));
+            
+            // Calculate total weight
+            const totalWeight = weightedRestaurants.reduce((sum, item) => sum + item.weight, 0);
+            
+            // Random weighted selection
+            let random = Math.random() * totalWeight;
+            let selected = null;
+            
+            for (const item of weightedRestaurants) {
+                random -= item.weight;
+                if (random <= 0) {
+                    selected = item.restaurant;
+                    break;
+                }
+            }
+            
+            // Fallback to first restaurant if something goes wrong
+            if (!selected) {
+                selected = availableRestaurants[0];
+            }
+            
             const isOpen = isRestaurantOpen(selected);
+            const mealTime = getCurrentMealTime();
+            const matchScore = selected.mealPreference[mealTime];
             
             // Display result
             document.getElementById('restaurantName').textContent = selected.name;
             
             const details = `
                 ${selected.cuisine} • ${selected.price}<br>
-                <span class="status ${isOpen ? 'open' : 'closed'}">${isOpen ? 'Open Now' : 'Closed'}</span><br>
+                <span class="status ${isOpen ? 'open' : 'closed'}">${isOpen ? 'Open Now' : 'Closed'}</span>
+                ${matchScore >= 4 ? `<span class="match-score">Great for ${mealTime}!</span>` : ''}<br>
                 Today: ${getTodayHours(selected)}<br>
                 📞 ${selected.phone}<br>
                 📍 ${selected.address}
