@@ -122,12 +122,11 @@ To add or modify restaurants, edit `restaurants.json`:
 
 ## Future Enhancement Ideas
 
-- Save preference history
 - Add cuisine type filtering
 - Include price range preferences
-- Add favorite/blacklist functionality
-- Integration with restaurant APIs for real-time hours
-- Multiple location support
+- Integration with Google Maps APIs for real-time hours
+- Restaurant Lookup with Google Maps APIs for quick adding
+- Add simple accounts and database to go wider than just us
 
 ## Contributing
 
