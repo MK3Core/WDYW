@@ -1,0 +1,106 @@
+{
+  "restaurants": [
+    {
+      "id": 1,
+      "name": "Tony's Italian Bistro",
+      "cuisine": "Italian",
+      "price": "$$",
+      "phone": "(555) 123-4567",
+      "address": "123 Main St",
+      "hours": {
+        "monday": { "open": "11:00", "close": "22:00" },
+        "tuesday": { "open": "11:00", "close": "22:00" },
+        "wednesday": { "open": "11:00", "close": "22:00" },
+        "thursday": { "open": "11:00", "close": "22:00" },
+        "friday": { "open": "11:00", "close": "23:00" },
+        "saturday": { "open": "11:00", "close": "23:00" },
+        "sunday": { "open": "12:00", "close": "21:00" }
+      }
+    },
+    {
+      "id": 2,
+      "name": "Taco Libre",
+      "cuisine": "Mexican",
+      "price": "$",
+      "phone": "(555) 987-6543",
+      "address": "456 Oak Ave",
+      "hours": {
+        "monday": { "open": "10:00", "close": "21:00" },
+        "tuesday": { "open": "10:00", "close": "21:00" },
+        "wednesday": { "open": "10:00", "close": "21:00" },
+        "thursday": { "open": "10:00", "close": "21:00" },
+        "friday": { "open": "10:00", "close": "22:00" },
+        "saturday": { "open": "10:00", "close": "22:00" },
+        "sunday": { "open": "11:00", "close": "20:00" }
+      }
+    },
+    {
+      "id": 3,
+      "name": "Sakura Sushi",
+      "cuisine": "Japanese",
+      "price": "$$$",
+      "phone": "(555) 555-0123",
+      "address": "789 Pine St",
+      "hours": {
+        "monday": null,
+        "tuesday": { "open": "17:00", "close": "22:00" },
+        "wednesday": { "open": "17:00", "close": "22:00" },
+        "thursday": { "open": "17:00", "close": "22:00" },
+        "friday": { "open": "17:00", "close": "23:00" },
+        "saturday": { "open": "17:00", "close": "23:00" },
+        "sunday": { "open": "17:00", "close": "21:00" }
+      }
+    },
+    {
+      "id": 4,
+      "name": "Burger Junction",
+      "cuisine": "American",
+      "price": "$",
+      "phone": "(555) 444-7890",
+      "address": "321 Elm St",
+      "hours": {
+        "monday": { "open": "11:00", "close": "23:00" },
+        "tuesday": { "open": "11:00", "close": "23:00" },
+        "wednesday": { "open": "11:00", "close": "23:00" },
+        "thursday": { "open": "11:00", "close": "23:00" },
+        "friday": { "open": "11:00", "close": "24:00" },
+        "saturday": { "open": "11:00", "close": "24:00" },
+        "sunday": { "open": "12:00", "close": "22:00" }
+      }
+    },
+    {
+      "id": 5,
+      "name": "Green Garden Cafe",
+      "cuisine": "Healthy",
+      "price": "$$",
+      "phone": "(555) 333-2222",
+      "address": "567 Maple Dr",
+      "hours": {
+        "monday": { "open": "08:00", "close": "15:00" },
+        "tuesday": { "open": "08:00", "close": "15:00" },
+        "wednesday": { "open": "08:00", "close": "15:00" },
+        "thursday": { "open": "08:00", "close": "15:00" },
+        "friday": { "open": "08:00", "close": "15:00" },
+        "saturday": { "open": "09:00", "close": "14:00" },
+        "sunday": null
+      }
+    },
+    {
+      "id": 6,
+      "name": "Pizza Palace",
+      "cuisine": "Pizza",
+      "price": "$",
+      "phone": "(555) 777-8888",
+      "address": "890 Cedar Ave",
+      "hours": {
+        "monday": { "open": "16:00", "close": "22:00" },
+        "tuesday": { "open": "16:00", "close": "22:00" },
+        "wednesday": { "open": "16:00", "close": "22:00" },
+        "thursday": { "open": "16:00", "close": "22:00" },
+        "friday": { "open": "16:00", "close": "23:00" },
+        "saturday": { "open": "12:00", "close": "23:00" },
+        "sunday": { "open": "12:00", "close": "22:00" }
+      }
+    }
+  ]
+}
